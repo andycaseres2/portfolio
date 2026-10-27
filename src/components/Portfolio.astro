@@ -1,0 +1,192 @@
+---
+import { content, links, projects, stack, type Lang } from "../i18n/content";
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const list = projects(lang);
+const otherHref = lang === "es" ? "/en/" : "/";
+const year = new Date().getFullYear();
+const navItems = [
+  ["#about", t.nav.about],
+  ["#experience", t.nav.experience],
+  ["#projects", t.nav.projects],
+  ["#stack", t.nav.stack],
+  ["#contact", t.nav.contact],
+];
+const socials = [
+  ["GitHub", links.github],
+  ["LinkedIn", links.linkedin],
+  ["YouTube", links.youtube],
+  ["TikTok", links.tiktok],
+  ["Instagram", links.instagram],
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-line/70 bg-ink/80 backdrop-blur">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+    <a href={lang === "es" ? "/" : "/en/"} class="flex items-center gap-2 font-semibold tracking-tight">
+      <span class="grid h-8 w-8 place-items-center rounded-lg border border-gold/50 font-mono text-sm text-gold">AC</span>
+      <span class="hidden sm:inline">Andy Caseres</span>
+    </a>
+    <ul class="hidden items-center gap-7 text-sm text-muted md:flex">
+      {navItems.map(([href, label]) => <li><a href={href} class="transition hover:text-cream">{label}</a></li>)}
+    </ul>
+    <div class="flex items-center gap-3">
+      <a href={otherHref} class="rounded-md border border-line px-2.5 py-1 font-mono text-xs text-muted transition hover:border-gold hover:text-gold" aria-label="Change language">{t.switchLang}</a>
+      <a href="#contact" class="rounded-md bg-gold px-3.5 py-1.5 text-sm font-semibold text-ink transition hover:brightness-110">{t.nav.cta}</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="grid-bg relative overflow-hidden border-b border-line">
+    <div class="pointer-events-none absolute -top-40 right-0 h-[480px] w-[480px] rounded-full bg-gold/10 blur-3xl"></div>
+    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 md:grid-cols-[1.4fr_1fr] md:py-28">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/5 px-3 py-1 text-xs font-medium text-gold">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>{t.hero.badge}
+        </span>
+        <h1 class="mt-6 text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl">Andy Caseres</h1>
+        <p class="mt-4 text-sm font-semibold uppercase tracking-[0.18em] text-gold sm:text-base">{t.hero.role}</p>
+        <p class="mt-5 font-mono text-sm text-muted sm:text-base">
+          <span class="text-gold">❯</span> {t.hero.prompt}<span class="cursor ml-1 text-gold">▍</span>
+        </p>
+        <p class="mt-6 max-w-xl leading-relaxed text-cream/80">{t.hero.lead}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#projects" class="rounded-lg bg-gold px-5 py-3 font-semibold text-ink transition hover:brightness-110">{t.hero.primary}</a>
+          <a href={`mailto:${links.email}`} class="rounded-lg border border-line bg-panel px-5 py-3 font-semibold transition hover:border-gold/60">{t.hero.secondary}</a>
+        </div>
+      </div>
+      <div class="mx-auto w-56 sm:w-64 md:w-full md:max-w-xs">
+        <div class="relative">
+          <div class="absolute -inset-3 rounded-3xl border border-gold/30"></div>
+          <img src="https://github.com/andycaseres2.png?size=600" alt="Andy Caseres" width="600" height="600" class="relative aspect-square w-full rounded-2xl object-cover" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="border-b border-line bg-panel/40">
+    <div class="mx-auto grid max-w-6xl grid-cols-2 gap-px px-5 md:grid-cols-4">
+      {t.stats.map((s) => (
+        <div class="py-8 md:px-6">
+          <p class="text-3xl font-bold text-gold">{s.value}</p>
+          <p class="mt-1 text-sm text-muted">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
+    <div class="reveal grid gap-10 md:grid-cols-[1fr_2fr]">
+      <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{t.about.title}</h2>
+      <div class="space-y-5 text-lg leading-relaxed text-cream/85">
+        {t.about.body.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="scroll-mt-20 border-y border-line bg-panel/30">
+    <div class="mx-auto max-w-6xl px-5 py-24">
+      <h2 class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-gold">{t.experience.title}</h2>
+      <ol class="mt-12 space-y-12 border-l border-line pl-8">
+        {t.experience.items.map((job) => (
+          <li class="reveal relative">
+            <span class="absolute -left-[37px] top-1.5 h-3 w-3 rounded-full border-2 border-gold bg-ink"></span>
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="text-xl font-semibold">{job.role} <span class="text-gold">· {job.company}</span></h3>
+              <span class="font-mono text-xs text-muted">{job.period}</span>
+            </div>
+            <p class="mt-1 text-sm text-muted">{job.type}</p>
+            <ul class="mt-4 space-y-2 text-cream/80">
+              {job.points.map((pt) => (
+                <li class="flex gap-3"><span class="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-gold"></span><span>{pt}</span></li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
+    <div class="reveal">
+      <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{t.projects.title}</h2>
+      <p class="mt-3 text-muted">{t.projects.subtitle}</p>
+    </div>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {list.map((p) => (
+        <article class="reveal group flex flex-col rounded-2xl border border-line bg-panel p-6 transition hover:-translate-y-1 hover:border-gold/50">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-lg font-semibold transition group-hover:text-gold">{p.name}</h3>
+            {p.wip && <span class="rounded-full border border-gold/40 px-2 py-0.5 text-[11px] text-gold">{t.projects.wip}</span>}
+          </div>
+          <p class="mt-3 flex-1 text-sm leading-relaxed text-cream/75">{p.description}</p>
+          <ul class="mt-5 flex flex-wrap gap-1.5">
+            {p.stack.map((s) => <li class="rounded-md bg-ink px-2 py-1 font-mono text-[11px] text-muted">{s}</li>)}
+          </ul>
+          <div class="mt-5 flex gap-4 border-t border-line pt-4 text-sm font-medium">
+            {p.demo && <a href={p.demo} target="_blank" rel="noopener" class="text-gold hover:underline">{t.projects.demo} ↗</a>}
+            <a href={p.repo} target="_blank" rel="noopener" class="text-muted hover:text-cream">{t.projects.code} ↗</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack" class="scroll-mt-20 border-y border-line bg-panel/30">
+    <div class="mx-auto max-w-6xl px-5 py-24">
+      <h2 class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-gold">{t.stack.title}</h2>
+      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {stack.map((g) => (
+          <div class="reveal">
+            <h3 class="font-semibold">{t.stack.groups[g.key as keyof typeof t.stack.groups]}</h3>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {g.items.map((i) => <li class="rounded-md border border-line bg-ink px-2.5 py-1 text-sm text-cream/80">{i}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section class="mx-auto max-w-6xl px-5 py-24">
+    <h2 class="reveal text-sm font-semibold uppercase tracking-[0.2em] text-gold">{t.community.title}</h2>
+    <div class="mt-10 grid gap-5 md:grid-cols-3">
+      {t.community.items.map((c) => (
+        <div class="reveal rounded-2xl border border-line p-6">
+          <h3 class="font-semibold">{c.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-cream/75">{c.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="scroll-mt-20 px-5 pb-24">
+    <div class="reveal grid-bg mx-auto max-w-6xl rounded-3xl border border-gold/30 bg-panel px-6 py-16 text-center sm:px-12">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">{t.contact.title}</h2>
+      <p class="mx-auto mt-4 max-w-xl text-cream/75">{t.contact.text}</p>
+      <a href={`mailto:${links.email}`} class="mt-8 inline-block rounded-lg bg-gold px-6 py-3 font-semibold text-ink transition hover:brightness-110">{t.contact.button}</a>
+      <p class="mt-4 font-mono text-sm text-muted">{links.email}</p>
+      <ul class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted">
+        {socials.map(([n, h]) => <li><a href={h} target="_blank" rel="noopener" class="hover:text-gold">{n}</a></li>)}
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-line">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-5 py-6 text-xs text-muted">
+    <span>© {year} Andy Caseres</span>
+    <span>{t.footer}</span>
+  </div>
+</footer>
